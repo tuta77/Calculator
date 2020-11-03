@@ -1,5 +1,8 @@
 /**
  * Created by Igor Kvon
+ * Калькулятор целых арабских и римских чисел.
+ * Входные данные от 1 до 10 [I-X] включительно
+ * На выходе целочисленное деление
  * */
 
 import java.io.BufferedReader;
@@ -58,9 +61,10 @@ public class Calculator {
 
     // Вычислить.
     static void getOperacii(String a, String b, String c, boolean ArabOrRim){
-        double x, y;
-        x = Double.parseDouble(a);
-        y = Double.parseDouble(b);
+        int x, y;
+        x = Integer.parseInt(a);
+        y = Integer.parseInt(b);
+
         switch (c) {
             case "+":
                 p("" + (x + y), ArabOrRim);
@@ -165,19 +169,7 @@ public class Calculator {
     // преобразование ответа с арабских чисел в римские
     static String getTransform(String txt, boolean fc) throws Exception{
         try {
-            String res="";
-            String a,b, z;
-
-            a = getComponents(txt, fc)[0];
-            if (getComponents(txt,fc)[2].length()>4){
-                b = getComponents(txt,fc)[2].substring(0,3);
-            }else{
-                b = getComponents(txt,fc)[2];
-            }
-            z = getComponents(txt,fc)[1];
-
-            res = convertToRim(a) + z +convertToRim(b);
-            return res;
+            return convertToRim(getComponents(txt, fc)[0]);
         } catch (Exception e) {
             throw new Exception(e.getMessage());
         }
@@ -203,15 +195,18 @@ public class Calculator {
     static String[] getComponents(String txt, boolean InOutMaska) throws Exception {
         try {
             StringTokenizer st;
-            if (InOutMaska){
-                st = new StringTokenizer(txt, "+-*/", true); //input txt
-            }else{
-                st = new StringTokenizer(txt, ".", true); //output txt
-            }
+            st = new StringTokenizer(txt, "+-*/", true); //input txt
 
             String[] arr = new String[st.countTokens()];
-            if (arr.length != 3){
-                throw new Exception("Недопустимая операция!");
+
+            if (InOutMaska){
+                if (arr.length != 3){
+                    throw new Exception("Недопустимая операция!");
+                }
+            }else{
+                if (arr.length != 1){
+                    throw new Exception("UPS!");
+                }
             }
             int i=0;
             while (st.hasMoreTokens()) {
